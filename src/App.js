@@ -1,56 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import React, { useEffect } from 'react';
 import './App.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import HomeScreen from "./Screens/HomeScreen";
+import LoginScreen from './Screens/LoginScreen.jsx';
+import { auth } from "./firebase.js";
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout, selectUser } from "./features/userSlice.js";
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser); // Change this to simulate user login status
+
+  useEffect(() => {
+    const unSubscribe = auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        console.log(userAuth);
+        dispatch(login({
+          uid: userAuth.uid,
+          email: userAuth.email,
+        }));
+      } else {
+        // logged out
+        dispatch(logout());
+      }
+    });
+    return unSubscribe;
+  }, [dispatch]); // Added dependency array with dispatch
+
+  // Define routes
+  const routes = user ? [
+    {
+      path: "/",
+      element: <HomeScreen />,
+    },
+    {
+      path: "/Account",
+      element: <div>My name is Deepak</div>,
+    },
+  ] : [
+    {
+      path: "*",
+      element: <LoginScreen />,
+    }
+  ];
+
+  // Create router with conditional routes
+  const router = createBrowserRouter(routes);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+    <div className='App'>
+      <RouterProvider router={router} />
     </div>
   );
 }

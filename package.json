@@ -40,5 +40,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepak429/netflix_app.git"
+  },
+  "author": "deepak_choudhary",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deepak429/netflix_app/issues"
+  },
+  "homepage": "https://github.com/deepak429/netflix_app#readme"
 }

@@ -9,6 +9,7 @@ import LoginScreen from './Screens/LoginScreen.jsx';
 import { auth } from "./firebase.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, selectUser } from "./features/userSlice.js";
+import ProfileScreen from './Screens/ProfileScreen.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function App() {
   useEffect(() => {
     const unSubscribe = auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
-        console.log(userAuth);
+        // console.log(userAuth);
         dispatch(login({
           uid: userAuth.uid,
           email: userAuth.email,
@@ -37,8 +38,8 @@ function App() {
       element: <HomeScreen />,
     },
     {
-      path: "/Account",
-      element: <div>My name is Deepak</div>,
+      path: "/profile",
+      element: <ProfileScreen/>
     },
   ] : [
     {
